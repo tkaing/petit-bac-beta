@@ -1,0 +1,22 @@
+.Header {
+    background-color: rgba(255,255,255,1);
+    border-bottom: 1px solid rgba(219,219,219,1);
+}
+
+.Header-child {
+    width: 100%;
+    padding: 8px 0;
+    border-width: 0;
+    background-color: transparent;
+}
+
+.Header-middle {
+    font-size: x-large;
+    color: #4A5057;
+}
+
+.Header-next,
+.Header-previous {
+    height: 100%;
+    color: rgba(219,219,219,1);
+}
