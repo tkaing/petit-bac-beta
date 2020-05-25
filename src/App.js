@@ -2,31 +2,32 @@
 import React from 'react';
 import './App.css';
 
-import Header from './Layout/Header';
-import Footer from './Layout/Footer';
+import Header from './layout/Header';
+import Footer from './layout/Footer';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from "react-bootstrap";
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Game from "./Screen/Game";
-import Round from "./Screen/Round";
-import Result from "./Screen/Result";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Game from "./screen/Game";
+import Round from "./screen/Round";
+import Result from "./screen/Result";
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleFooterClick = this.handleFooterClick.bind(this);
+        this.handleScreenDidMount = this.handleScreenDidMount.bind(this);
         this.state = {
-            headerIcon: faGraduationCap
+            headerIcon: faGraduationCap, nextPath: Round.Path
         };
     }
 
-    handleFooterClick(headerIcon) {
+    handleScreenDidMount(headerIcon, nextPath) {
         this.setState({
-            headerIcon: headerIcon
+            headerIcon: headerIcon, nextPath: nextPath
         });
     }
 
@@ -36,17 +37,17 @@ class App extends React.Component {
                 <Router>
                     <Header icon={ this.state.headerIcon } />
                     <Switch>
-                        <Route exact path="/">
-                            <Game />
+                        <Route exact path={ Game.Path }>
+                            <Game onScreenDidMount={ this.handleScreenDidMount } />
                         </Route>
-                        <Route path="/round">
-                            <Round onFooterClick={ this.handleFooterClick } />
+                        <Route path={ Round.Path }>
+                            <Round onScreenDidMount={ this.handleScreenDidMount } />
                         </Route>
-                        <Route path="/result">
-                            <Result />
+                        <Route path={ Result.Path }>
+                            <Result onScreenDidMount={ this.handleScreenDidMount } />
                         </Route>
                     </Switch>
-                    <Footer />
+                    <Footer nextPath={ this.state.nextPath } />
                 </Router>
             </Container>
 

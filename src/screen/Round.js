@@ -1,19 +1,24 @@
 import React from 'react';
 import './Round.css';
-import {faFont, faGraduationCap} from "@fortawesome/free-solid-svg-icons";
+
+import { faFont, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import Game from "./Game";
+import Result from "./Result";
 
 class Round extends React.Component {
+
+    static Path = '/round';
 
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        this.props.onFooterClick(faFont);
+        this.props.onScreenDidMount(faFont, Result.Path);
     }
 
     componentWillUnmount() {
-        this.props.onFooterClick(faGraduationCap);
+        this.props.onScreenDidMount(faGraduationCap, Game.Path);
     }
 
     render() {

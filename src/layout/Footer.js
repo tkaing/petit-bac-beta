@@ -2,19 +2,21 @@ import React from 'react';
 import './Footer.css';
 
 import { Col, Row } from "react-bootstrap";
-import {faCheck, faFont, faGraduationCap} from '@fortawesome/free-solid-svg-icons'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+
 import { withRouter } from 'react-router-dom';
 
 class Footer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleValidationClick = this.handleValidationClick.bind(this);
     }
 
-    handleClick = () => {
-        this.props.history.push("/round");
+    handleValidationClick = () => {
+        this.props.history.push(this.props.nextPath);
     }
 
     render() {
@@ -34,7 +36,7 @@ class Footer extends React.Component {
                             <Col>
                                 <button type={"button"}
                                         className={"Footer-child Footer-middle"}
-                                        onClick={ this.handleClick }>
+                                        onClick={ this.handleValidationClick }>
                                     <FontAwesomeIcon icon={ faCheck } />
                                 </button>
                             </Col>
