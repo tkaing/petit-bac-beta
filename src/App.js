@@ -1,19 +1,17 @@
 //import logo from './logo.svg';
 import React from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container } from "react-bootstrap";
-
-import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Game from "./screen/Game";
 import Round from "./screen/Round";
 import Result from "./screen/Result";
+
+import { Container } from "react-bootstrap";
+import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 class App extends React.Component {
 

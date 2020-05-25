@@ -8,10 +8,9 @@ class Timer extends React.Component {
 
     render() {
         if (this.props.isTimerMode) {
-            const Letter = this.props.unit === Timer.Minutes ? 'm' : 's';
             return (
                 <div className={"justify-content-center align-self-center"}>
-                    0{Letter}
+                    0{ this.props.unit === Timer.Minutes ? 'm' : 's' }
                 </div>
             );
         }

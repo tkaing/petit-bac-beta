@@ -1,9 +1,10 @@
 import React from 'react';
 import './Header.css';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { Col, Row } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faChevronLeft, faChevronRight, faGraduationCap} from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 class Header extends React.Component {
 

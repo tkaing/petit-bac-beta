@@ -2,12 +2,13 @@ import React from 'react';
 import './Footer.css';
 
 import Timer from "./../component/Timer";
-import { Col, Row } from "react-bootstrap";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { Col, Row } from "react-bootstrap";
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+
 
 class Footer extends React.Component {
 

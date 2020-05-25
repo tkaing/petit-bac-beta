@@ -1,9 +1,10 @@
 import React from 'react';
 import './Round.css';
 
-import { faFont, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import Game from "./Game";
 import Result from "./Result";
+
+import { faFont, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
 class Round extends React.Component {
 

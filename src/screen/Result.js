@@ -1,9 +1,10 @@
 import React from 'react';
 import './Result.css';
 
-import { faFont, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import Game from "./Game";
 import Round from "./Round";
+
+import { faFont, faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 class Result extends React.Component {
 
