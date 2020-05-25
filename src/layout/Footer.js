@@ -1,6 +1,7 @@
 import React from 'react';
 import './Footer.css';
 
+import Timer from "./../component/Timer";
 import { Col, Row } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -28,8 +29,8 @@ class Footer extends React.Component {
                     <Col md={8} lg={6}>
                         <Row className={"align-items-center"}>
                             <Col>
-                                <div className={"Footer-child Footer-minutes justify-content-center align-self-center"}>
-                                    0m
+                                <div className={"Footer-child Footer-minutes"}>
+                                    <Timer unit={ Timer.Minutes } isTimerMode={ this.props.isTimerMode } />
                                 </div>
                             </Col>
 
@@ -42,8 +43,8 @@ class Footer extends React.Component {
                             </Col>
 
                             <Col>
-                                <div className={"Footer-child Footer-seconds justify-content-center align-self-center"}>
-                                    0s
+                                <div className={"Footer-child Footer-seconds"}>
+                                    <Timer unit={ Timer.Seconds } isTimerMode={ this.props.isTimerMode } />
                                 </div>
                             </Col>
                         </Row>

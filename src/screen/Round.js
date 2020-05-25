@@ -14,7 +14,7 @@ class Round extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onScreenDidMount(faFont, Result.Path);
+        this.props.onScreenDidMount(faFont, Result.Path, true);
     }
 
     componentWillUnmount() {

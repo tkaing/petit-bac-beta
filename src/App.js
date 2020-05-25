@@ -21,13 +21,17 @@ class App extends React.Component {
         super(props);
         this.handleScreenDidMount = this.handleScreenDidMount.bind(this);
         this.state = {
-            headerIcon: faGraduationCap, nextPath: Round.Path
+            headerIcon: faGraduationCap,
+            nextPath: Round.Path,
+            isTimerMode: false
         };
     }
 
-    handleScreenDidMount(headerIcon, nextPath) {
+    handleScreenDidMount(headerIcon, nextPath, isTimerMode = false) {
         this.setState({
-            headerIcon: headerIcon, nextPath: nextPath
+            headerIcon: headerIcon,
+            nextPath: nextPath,
+            isTimerMode: isTimerMode
         });
     }
 
@@ -47,7 +51,8 @@ class App extends React.Component {
                             <Result onScreenDidMount={ this.handleScreenDidMount } />
                         </Route>
                     </Switch>
-                    <Footer nextPath={ this.state.nextPath } />
+                    <Footer isTimerMode={ this.state.isTimerMode }
+                            nextPath={ this.state.nextPath } />
                 </Router>
             </Container>
 
