@@ -1,0 +1,20 @@
+.headline-xs {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 0.6em !important;
+}
+.headline-sm {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 0.8em !important;
+}
+.headline-md {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 1em !important;
+}
+.headline-lg {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 1.2em !important;
+}
+.headline-xl {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 1.4em !important;
+}

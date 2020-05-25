@@ -1,0 +1,15 @@
+.CategoryList-item,
+.CategoryList-title {
+    list-style: none;
+}
+.CategoryList-title {
+    margin-bottom: 20px;
+}
+
+.CategoryList.list-group-horizontal .CategoryList-item {
+    margin-right: 10px;
+}
+
+.CategoryList:not(.list-group-horizontal) .CategoryList-item {
+    margin-bottom: 10px;
+}

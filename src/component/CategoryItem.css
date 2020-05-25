@@ -1,0 +1,16 @@
+.CategoryItem {
+    display: flex;
+}
+
+.CategoryItem-text {
+    flex: 2;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.CategoryItem-close,
+.CategoryItem-close:hover,
+.CategoryItem-close:focus {
+    border-radius: 45%;
+    background-color: transparent;
+}
