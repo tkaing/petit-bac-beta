@@ -6,6 +6,11 @@
     margin-bottom: 20px;
 }
 
+.CategoryList.list-group-horizontal {
+    display: flex;
+    justify-content: center;
+}
+
 .CategoryList.list-group-horizontal .CategoryList-item {
     margin-right: 10px;
 }

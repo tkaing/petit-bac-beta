@@ -9,43 +9,47 @@ class CategoryItem extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleTextClick = this.handleTextClick.bind(this);
-        this.state = {
-            active: this.props.active
-        };
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    handleTextClick() {
-        const isToggleItem = this.props.toggle;
-        const isActiveItem = this.state.active;
-        this.setState({
-            active: isToggleItem ? !isActiveItem : this.props.active
-        });
+    handleClick() {
+        this.props.onCategoryItemClick(this);
     }
 
     render() {
-        let crossDOM = null;
-        if (this.props.cross) {
-            crossDOM = (
+        let textDOM = (
+            <Button
+                type={"button"}
+                active={ this.props.active }
+                variant={"outline-primary"}
+                className={"CategoryItem-text headline-sm"}>
+                { this.props.title }
+            </Button>
+        );
+        if (this.props.toggle) {
+            textDOM = (
                 <Button
                     type={"button"}
-                    variant={"link"}
-                    className={"CategoryItem-close"}>
-                    <FontAwesomeIcon icon={ faTimesCircle } />
+                    active={ this.props.active }
+                    variant={"outline-primary"}
+                    onClick={ this.handleClick }
+                    className={"CategoryItem-text headline-sm"}>
+                    { this.props.title }
                 </Button>
             );
         }
         return (
             <div className={"CategoryItem"}>
-                <Button
-                    type={"button"}
-                    active={ this.state.active }
-                    variant={"outline-primary"}
-                    onClick={ this.handleTextClick }
-                    className={"CategoryItem-text headline-sm"}>
-                    { this.props.title }
-                </Button>
-                { crossDOM }
+                { textDOM }
+                { this.props.cross &&
+                    <Button
+                        type={"button"}
+                        variant={"link"}
+                        onClick={ this.handleClick }
+                        className={"CategoryItem-close"}>
+                        <FontAwesomeIcon icon={ faTimesCircle } />
+                    </Button>
+                }
             </div>
         );
     }
