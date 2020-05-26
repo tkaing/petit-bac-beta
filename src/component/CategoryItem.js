@@ -17,7 +17,7 @@ class CategoryItem extends React.Component {
     }
 
     render() {
-        let textDOM = (
+        let TextButtonDOM = (
             <Button
                 type={"button"}
                 active={ this.props.active }
@@ -26,21 +26,12 @@ class CategoryItem extends React.Component {
                 { this.props.title }
             </Button>
         );
-        if (this.props.toggle) {
-            textDOM = (
-                <Button
-                    type={"button"}
-                    active={ this.props.active }
-                    variant={"outline-primary"}
-                    onClick={ this.handleClick }
-                    className={"CategoryItem-text headline-sm"}>
-                    { this.props.title }
-                </Button>
-            );
-        }
+        if (this.props.toggle)
+            TextButtonDOM = React.cloneElement(TextButtonDOM, { onClick: this.handleClick });
+
         return (
             <div className={"CategoryItem"}>
-                { textDOM }
+                { TextButtonDOM }
                 { this.props.cross &&
                     <Button
                         type={"button"}

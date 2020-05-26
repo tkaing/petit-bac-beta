@@ -1,13 +1,15 @@
 .headline-xs {
-    font-family: 'Oxygen', sans-serif;
+    font-family: 'Muli', sans-serif;
     font-size: 0.6em !important;
+    font-weight: 400 !important;
 }
 .headline-sm {
-    font-family: 'Oxygen', sans-serif;
+    font-family: 'Muli', sans-serif;
     font-size: 0.8em !important;
+    font-weight: 500 !important;
 }
 .headline-md {
-    font-family: 'Oxygen', sans-serif;
+    font-family: 'Muli', sans-serif;
     font-size: 1em !important;
 }
 .headline-lg {
