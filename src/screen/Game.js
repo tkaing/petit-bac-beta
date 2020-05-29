@@ -22,6 +22,7 @@ class Game extends React.Component {
         this.state = {
             categoryItems: [],
             categoryItemsSelected: [],
+            categoryListTitle: CategoryList.emptyTitle
         };
     }
 
@@ -29,7 +30,8 @@ class Game extends React.Component {
         CategoryList.editableIdentifier = 100;
         this.props.onScreenDidMount(faPencilAlt, Round.Path);
         this.setState({
-            categoryItems: this.setupCategories()
+            categoryItems: this.setupCategories(),
+            categoryListTitle: CategoryList.emptyTitle
         });
     }
 
@@ -69,7 +71,8 @@ class Game extends React.Component {
             );
 
             this.setState({
-                categoryItemsSelected: [...itemsSelected, itemSelected]
+                categoryItemsSelected: [...itemsSelected, itemSelected],
+                categoryListTitle: CategoryList.defaultTitle
             });
 
         } else {
@@ -97,7 +100,8 @@ class Game extends React.Component {
                 );
                 this.setState({
                     categoryItems: items,
-                    categoryItemsSelected: [...itemsSelected, itemSelected]
+                    categoryItemsSelected: [...itemsSelected, itemSelected],
+                    categoryListTitle: CategoryList.defaultTitle
                 });
             }
             if (shouldDeleteItem) {
@@ -118,7 +122,9 @@ class Game extends React.Component {
 
                 this.setState({
                     categoryItems: items,
-                    categoryItemsSelected: itemsSelected
+                    categoryItemsSelected: itemsSelected,
+                    categoryListTitle: itemsSelected.length === 0
+                        ? CategoryList.emptyTitle : CategoryList.defaultTitle
                 });
             }
         }
@@ -157,7 +163,9 @@ class Game extends React.Component {
 
         this.setState({
             categoryItems: items,
-            categoryItemsSelected: itemsSelected
+            categoryItemsSelected: itemsSelected,
+            categoryListTitle: itemsSelected.length === 0
+                ? CategoryList.emptyTitle : CategoryList.defaultTitle
         });
     }
 
@@ -189,7 +197,7 @@ class Game extends React.Component {
                                 delete: true,
                                 toggle: false,
                                 horizontal: false,
-                                title: "Catégories de la partie"
+                                title: this.state.categoryListTitle
                             }) }
                         </section>
                     </Col>

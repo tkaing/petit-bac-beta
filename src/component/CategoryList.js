@@ -5,6 +5,8 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 class CategoryList extends React.Component {
 
     static editableIdentifier = 100;
+    static emptyTitle = "Ajouter des catégories";
+    static defaultTitle = "Catégories de la partie";
 
     render() {
         const title = this.props.title;
