@@ -5,8 +5,8 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 class CategoryList extends React.Component {
 
     static editableIdentifier = 100;
-    static emptyTitle = "Ajouter des catégories";
     static defaultTitle = "Catégories de la partie";
+    static emptyTitle = "Préparez vos catégories ...";
 
     render() {
         const title = this.props.title;
@@ -16,7 +16,7 @@ class CategoryList extends React.Component {
         return (
             <ListGroup className={"CategoryList"} horizontal={ horizontal ? "md" : false }>
                 { title !== undefined &&
-                    <ListGroupItem className={"CategoryList-title text-left headline-lg"}>
+                    <ListGroupItem className={"CategoryList-title text-xs-center text-md-left headline-lg"}>
                         { title }
                     </ListGroupItem>
                 }
