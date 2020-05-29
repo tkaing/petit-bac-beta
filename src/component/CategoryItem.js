@@ -2,7 +2,8 @@ import React from 'react';
 import './CategoryItem.css';
 
 import {Button, FormControl, FormText, ListGroupItem} from "react-bootstrap";
-import { faPencilAlt, faPlus, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CategoryList from "./CategoryList";
 
