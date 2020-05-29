@@ -11,10 +11,6 @@ class CategoryList extends React.Component {
         const horizontal = this.props.horizontal;
         const categoryItems = this.props.categoryItems;
 
-        const categories = categoryItems.map((categoryItem) =>
-            React.cloneElement(categoryItem, { key: categoryItem.props.id })
-        );
-
         return (
             <ListGroup className={"CategoryList"} horizontal={ horizontal ? "md" : false }>
                 { title !== undefined &&
@@ -22,7 +18,9 @@ class CategoryList extends React.Component {
                         { title }
                     </ListGroupItem>
                 }
-                { categories }
+                { categoryItems.map((categoryItem) =>
+                    React.cloneElement(categoryItem, { key: categoryItem.props.id })
+                ) }
             </ListGroup>
         );
     }
