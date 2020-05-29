@@ -1,28 +1,29 @@
 import React from 'react';
 import './CategoryList.css';
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 
 class CategoryList extends React.Component {
+
+    static editableIdentifier = 100;
 
     render() {
         const title = this.props.title;
         const horizontal = this.props.horizontal;
-        const categories = this.props.categories;
-        const categoriesDOM = categories.map((categoryItem, index) =>
-            <li key={ index } className={"CategoryList-item"}>
-                { categoryItem }
-            </li>
+        const categoryItems = this.props.categoryItems;
+
+        const categories = categoryItems.map((categoryItem) =>
+            React.cloneElement(categoryItem, { key: categoryItem.props.id })
         );
-        const horizontalClassName = horizontal ? 'list-group-horizontal' : '';
 
         return (
-            <ul className={"CategoryList list-group " + horizontalClassName }>
+            <ListGroup className={"CategoryList"} horizontal={ horizontal ? "md" : false }>
                 { title !== undefined &&
-                    <li className={"CategoryList-title text-left headline-lg"}>
+                    <ListGroupItem className={"CategoryList-title text-left headline-lg"}>
                         { title }
-                    </li>
+                    </ListGroupItem>
                 }
-                { categoriesDOM }
-            </ul>
+                { categories }
+            </ListGroup>
         );
     }
 }

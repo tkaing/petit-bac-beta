@@ -16,117 +16,167 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.setupCategories = this.setupCategories.bind(this);
-        this.isActiveCategory = this.isActiveCategory.bind(this);
-        this.createCategoryItem = this.createCategoryItem.bind(this);
+        this.handleCategoryItemKeyUp = this.handleCategoryItemKeyUp.bind(this);
         this.handleCategoryItemClick = this.handleCategoryItemClick.bind(this);
+        this.handleCloseCategoryItemClick = this.handleCloseCategoryItemClick.bind(this);
         this.state = {
-            categoriesInitial: [],
-            categoriesSelected: [],
+            categoryItems: [],
+            categoryItemsSelected: [],
         };
     }
 
     componentDidMount() {
+        CategoryList.editableIdentifier = 100;
         this.props.onScreenDidMount(faPencilAlt, Round.Path);
         this.setState({
-            categoriesInitial: this.setupCategories()
+            categoryItems: this.setupCategories()
         });
     }
 
     componentWillUnmount() {
+        CategoryList.editableIdentifier = 100;
         this.props.onScreenDidMount(faTrophy, Result.Path);
     }
 
     setupCategories() {
-        return ["Prénom", "Animal"].map((title) =>
-            this.createCategoryItem(title, false)
+        const items = ["Prénom", "Animal"].map((title, index) =>
+            CategoryItem.create(
+                this.handleCategoryItemClick,
+                index, title, false
+            )
         );
+        return [...items, CategoryItem.createAdd(this.handleCategoryItemClick)];
     }
 
-    isActiveCategory(title) {
-        const categories = this.state.categoriesSelected;
-        const category = categories.find((categoryItem) => {
-            return categoryItem.props.title === title;
-        });
-        return category !== undefined;
-    }
-
-    createCategoryItem(title, selected, active = false) {
-        const categoryItem = (
-            <CategoryItem
-                title={ title }
-                active={ active }
-                onCategoryItemClick={ this.handleCategoryItemClick }
-            />
-        );
-        const props = selected
-            ? { toggle: false, cross: true }
-            : { toggle: true, cross: false };
-        return React.cloneElement(categoryItem, props);
-    }
-
-    handleCategoryItemClick(item) {
+    handleCategoryItemClick(categoryItem) {
 
         const
-            currentTitle = item.props.title,
-            categories = this.state.categoriesInitial;
-
+            items = this.state.categoryItems,
+            itemsSelected = this.state.categoryItemsSelected;
         const
-            categoriesInitial = [],
-            categoriesSelected = [];
+            id = categoryItem.props.id,
+            title = categoryItem.props.title;
+        const
+            add = categoryItem.props.add,
+            editable = categoryItem.props.editable;
 
-        categories.forEach((item) => {
-            const
-                title = item.props.title,
-                active = this.isActiveCategory(title);
-            let
-                propsInitial,
-                propsSelected;
+        if (add) {
 
-            if (currentTitle === title) {
-                propsInitial = { active: !active };
-                propsSelected = !active ? { active: true } : null;
-            } else {
-                propsInitial = { active: active };
-                propsSelected = active ? { active: active } : null;
-            }
-
-            const
-                itemInitial = this.createCategoryItem(title, false),
-                itemSelected = this.createCategoryItem(title, true);
-
-            categoriesInitial.push(
-                React.cloneElement(itemInitial, propsInitial)
+            const itemSelected = CategoryItem.createEditable(
+                this.handleCategoryItemClick,
+                this.handleCategoryItemKeyUp,
+                this.handleCloseCategoryItemClick,
             );
-            if (propsSelected !== null)
-                categoriesSelected.push(
-                    React.cloneElement(itemSelected, propsSelected)
+
+            this.setState({
+                categoryItemsSelected: [...itemsSelected, itemSelected]
+            });
+
+        } else {
+
+            const
+                categorySelected = itemsSelected.find((item) => item.props.id === id),
+                active = categorySelected !== undefined,
+                shouldAddItem = !active,
+                shouldDeleteItem = active;
+
+            if (shouldAddItem) {
+                const
+                    index = items.findIndex((item) => item.props.id === id),
+                    containsItem = index !== -1;
+                if (containsItem) {
+                    const itemReplaced = CategoryItem.create(
+                        this.handleCategoryItemClick,
+                        id, title, true
+                    );
+                    items.splice(index, 1, itemReplaced);
+                }
+                const itemSelected = CategoryItem.createSelected(
+                    this.handleCloseCategoryItemClick,
+                    categoryItem
                 );
-        });
+                this.setState({
+                    categoryItems: items,
+                    categoryItemsSelected: [...itemsSelected, itemSelected]
+                });
+            }
+            if (shouldDeleteItem) {
+                let index;
+                let containsItem;
+
+                // Initial
+                index = items.findIndex((item) => item.props.id === id);
+                containsItem = index !== -1;
+                if (containsItem)
+                    items.splice(index, 1, CategoryItem.clone(categoryItem));
+
+                // Selected
+                index = itemsSelected.findIndex((item) => item.props.id === id);
+                containsItem = index !== -1;
+                if (containsItem)
+                    itemsSelected.splice(index, 1);
+
+                this.setState({
+                    categoryItems: items,
+                    categoryItemsSelected: itemsSelected
+                });
+            }
+        }
+    }
+
+    handleCategoryItemKeyUp(categoryItem, text) {
+
+        const id = categoryItem.props.id;
+    }
+
+    handleCloseCategoryItemClick(categoryItem) {
+
+        let
+            items = this.state.categoryItems,
+            itemsSelected = this.state.categoryItemsSelected;
+
+        const id = categoryItem.props.id;
+        const editable = categoryItem.props.editable;
+
+        let index;
+        let containsItem;
+
+        // Initial
+        if (!editable) {
+            index = items.findIndex((item) => item.props.id === id);
+            containsItem = index !== -1;
+            if (containsItem)
+                items.splice(index, 1, CategoryItem.clone(categoryItem));
+        }
+
+        // Selected
+        index = itemsSelected.findIndex((item) => item.props.id === id);
+        containsItem = index !== -1;
+        if (containsItem)
+            itemsSelected.splice(index, 1);
 
         this.setState({
-            categoriesInitial: categoriesInitial,
-            categoriesSelected: categoriesSelected,
+            categoryItems: items,
+            categoryItemsSelected: itemsSelected
         });
     }
 
     render() {
-        const categoryListInitial = (
-            <CategoryList categories={ this.state.categoriesInitial }
-                          onCategoryItemClick={ this.handleCategoryItemClick } />
+        const categoryList = (
+            <CategoryList categoryItems={ this.state.categoryItems } />
         );
         const categoryListSelected = (
-            <CategoryList categories={ this.state.categoriesSelected }
-                          onCategoryItemClick={ this.handleCategoryItemClick } />
+            <CategoryList categoryItems={ this.state.categoryItemsSelected } />
         );
         return (
             <div className={"Game"}>
                 <Row>
-                    <Col xs={6} md={8}>
+                    <Col xs={6} md={7}>
                         <section className={"Game-left"}>
-                            { React.cloneElement(categoryListInitial, {
+                            { React.cloneElement(categoryList, {
                                 add: false,
-                                toggle: true,
                                 delete: false,
+                                toggle: true,
                                 horizontal: true
                             }) }
                         </section>

@@ -7,10 +7,32 @@
     padding: 8px 18px;
     border-radius: 20px;
 }
+.CategoryItem-text-customizable {
+    padding: 0 18px;
+}
 
 .CategoryItem-close,
 .CategoryItem-close:hover,
 .CategoryItem-close:focus {
     border-radius: 45%;
     background-color: transparent;
+}
+.CategoryItem-text-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.CategoryItem-text-custom-icon {
+    font-size: 15px !important;
+}
+.CategoryItem-text-custom-content {
+    padding: 8px;
+}
+.CategoryItem-text-custom-content:focus {
+    outline: unset;
+}
+.CategoryItem-text-custom-content:empty:before {
+    content: attr(placeholder);
+    color: #ffffff;
+    opacity: 0.7;
 }

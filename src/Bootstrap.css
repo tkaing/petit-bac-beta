@@ -1,3 +1,26 @@
+.list-group-item {
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+.btn-outline-secondary {
+    color: #523F78 !important;
+    border-color: #523F78 !important;
+}
+.btn-outline-secondary:not(:disabled):not(.disabled).active,
+.btn-outline-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-outline-secondary.dropdown-toggle {
+    color: #fff !important;
+    border-color: #523F78 !important;
+    background-color: #523F78 !important;
+}
+.btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
+.btn-outline-secondary:not(:disabled):not(.disabled):active:focus,
+.show>.btn-outline-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(82,63,120,.5) !important;
+}
+
 .btn-outline-primary:not(.active):hover,
 .btn-outline-primary:not(.active):focus {
     color: #007bff !important;

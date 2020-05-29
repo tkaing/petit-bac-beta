@@ -6,15 +6,15 @@
     margin-bottom: 20px;
 }
 
-.CategoryList.list-group-horizontal {
+.CategoryList.list-group-horizontal-md {
     display: flex;
     justify-content: center;
 }
 
-.CategoryList.list-group-horizontal .CategoryList-item {
+.CategoryList .CategoryItem {
+    margin-bottom: 10px;
+}
+.CategoryList.list-group-horizontal-md .CategoryItem {
     margin-right: 10px;
 }
 
-.CategoryList:not(.list-group-horizontal) .CategoryList-item {
-    margin-bottom: 10px;
-}
