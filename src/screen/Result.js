@@ -2,8 +2,8 @@ import React from 'react';
 import './Result.css';
 
 import Game from "./Game";
-import Round from "./Round";
 
+import { withRouter } from 'react-router-dom';
 import { faFont, faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 class Result extends React.Component {
@@ -12,14 +12,24 @@ class Result extends React.Component {
 
     constructor(props) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        this.props.onScreenDidMount(faTrophy, Game.Path);
+        this.props.onScreenDidMount({
+            header_icon: faTrophy,
+            footer_handleSubmit: this.handleSubmit
+        });
     }
 
     componentWillUnmount() {
-        this.props.onScreenDidMount(faFont, Round.Path);
+        this.props.onScreenDidMount({
+            header: { icon: faFont },
+        });
+    }
+
+    handleSubmit() {
+        this.props.history.push(Game.Path);
     }
 
     render() {
@@ -29,4 +39,4 @@ class Result extends React.Component {
     }
 }
 
-export default Result;
+export default withRouter(Result);

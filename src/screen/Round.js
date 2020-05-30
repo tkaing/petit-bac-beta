@@ -1,9 +1,10 @@
 import React from 'react';
 import './Round.css';
 
-import Game from "./Game";
 import Result from "./Result";
+import Timer from "../component/Timer";
 
+import { withRouter } from 'react-router-dom';
 import { faFont, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
 class Round extends React.Component {
@@ -12,14 +13,28 @@ class Round extends React.Component {
 
     constructor(props) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        this.props.onScreenDidMount(faFont, Result.Path, true);
+        this.props.onScreenDidMount({
+            header_icon: faFont,
+            footer_handleSubmit: this.handleSubmit,
+            footer_leftComponent: <Timer unit={ Timer.Minutes } isTimerMode={ true } />,
+            footer_rightComponent: <Timer unit={ Timer.Seconds } isTimerMode={ true } />,
+        });
     }
 
     componentWillUnmount() {
-        this.props.onScreenDidMount(faGraduationCap, Game.Path);
+        this.props.onScreenDidMount({
+            header_icon: faGraduationCap,
+            footer_leftComponent: null,
+            footer_rightComponent: null,
+        });
+    }
+
+    handleSubmit() {
+        this.props.history.push(Result.Path);
     }
 
     render() {
@@ -29,4 +44,4 @@ class Round extends React.Component {
     }
 }
 
-export default Round;
+export default withRouter(Round);

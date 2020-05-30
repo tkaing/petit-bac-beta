@@ -1,10 +1,10 @@
 import React from 'react';
 import './Header.css';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Logo from "../icon/LOGOTITRECLAIRE.svg";
 
-import { Col, Row } from "react-bootstrap";
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Col, Row, ListGroup, ListGroupItem } from "react-bootstrap";
 
 class Header extends React.Component {
 
@@ -13,6 +13,7 @@ class Header extends React.Component {
     }
 
     render() {
+
         return (
             <header className="Header fixed-top">
                 <Row>
@@ -20,22 +21,22 @@ class Header extends React.Component {
 
                     <Col md={8} lg={6}>
                         <Row>
-                            <Col>
-                                <button type={"button"} className={"Header-child Header-previous"}>
-                                    <FontAwesomeIcon icon={ faChevronLeft } />
+                            <Col xs={4}>
+                                <button type={"button"} className={"Header-logo"}>
+                                    <img src={ Logo } className={"Header-logo-img"} />
                                 </button>
                             </Col>
 
                             <Col>
-                                <button type={"button"} className={"Header-child Header-middle"}>
-                                    <FontAwesomeIcon icon={ this.props.icon } />
-                                </button>
-                            </Col>
-
-                            <Col>
-                                <button type={"button"} className={"Header-child Header-next"}>
-                                    <FontAwesomeIcon icon={ faChevronRight } />
-                                </button>
+                                <ListGroup className={"Header-list"}>
+                                    <ListGroupItem className={"Header-item"}>
+                                        <button
+                                            type={"button"}
+                                            className={"Header-item-button color-dark"}>
+                                            <FontAwesomeIcon icon={ this.props.icon } />
+                                        </button>
+                                    </ListGroupItem>
+                                </ListGroup>
                             </Col>
                         </Row>
                     </Col>

@@ -3,20 +3,25 @@
     border-bottom: 1px solid rgba(219,219,219,1);
 }
 
-.Header-child {
+.Header-logo {
     width: 100%;
-    padding: 8px 0;
-    border-width: 0;
+    text-align: center;
+    border: 0;
     background-color: transparent;
 }
-
-.Header-middle {
-    font-size: x-large;
-    color: #4A5057;
+.Header-logo-img {
+    width: 87%;
+    height: 65px;
 }
-
-.Header-next,
-.Header-previous {
-    height: 100%;
-    color: rgba(219,219,219,1);
+.Header-list {
+    justify-content: flex-start;
+    flex-direction: initial;
+    align-items: flex-end;
+    height: 93%;
+}
+.Header-item-button {
+    border: 0;
+    background: transparent;
+    padding: 7px 14px;
+    font-size: 1.4em;
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import './CategoryItem.css';
 
-import {Button, FormControl, FormText, ListGroupItem} from "react-bootstrap";
-import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CategoryList from "./CategoryList";
+
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import { faPencilAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, ListGroupItem } from "react-bootstrap";
 
 class CategoryItem extends React.Component {
 
@@ -74,7 +75,7 @@ class CategoryItem extends React.Component {
         return React.cloneElement(element, props);
     }
 
-    static createEditable(handler, handlerKeyUp, handlerClose, id, title = "") {
+    static createEditable(handler, handlerKeyUp, handlerClose, title = "") {
         const element = (
             <CategoryItem
                 id={ CategoryList.editableIdentifier++ }
@@ -191,7 +192,7 @@ class CategoryItem extends React.Component {
                         variant={"link"}
                         className={"CategoryItem-close"}
                         onClick={ this.handleCloseClick }>
-                        <FontAwesomeIcon icon={ faTimesCircle } />
+                        <FontAwesomeIcon icon={ faTimesCircle } className={"CategoryItem-close-icon"} />
                     </Button>
                 }
             </ListGroupItem>

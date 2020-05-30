@@ -12,13 +12,10 @@
 
 .Footer-middle {
     font-size: xx-large;
-    color: #007bff;
 }
 
-.Footer-minutes,
-.Footer-seconds {
+.Footer-left,
+.Footer-right {
     height: 100%;
     vertical-align: middle;
-    color: #007bff;
-    /*color: rgba(219,219,219,1);*/
 }

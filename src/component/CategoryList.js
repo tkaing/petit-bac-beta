@@ -1,12 +1,13 @@
 import React from 'react';
 import './CategoryList.css';
+
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 
 class CategoryList extends React.Component {
 
     static editableIdentifier = 100;
     static defaultTitle = "Catégories de la partie";
-    static emptyTitle = "Préparez vos catégories ...";
+    static emptyTitle = "";
 
     render() {
         const title = this.props.title;

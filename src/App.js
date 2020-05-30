@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from './layout/Header';
 import Footer from './layout/Footer';
+
 import Game from "./screen/Game";
 import Round from "./screen/Round";
 import Result from "./screen/Result";
@@ -21,25 +22,23 @@ class App extends React.Component {
         super(props);
         this.handleScreenDidMount = this.handleScreenDidMount.bind(this);
         this.state = {
-            headerIcon: faGraduationCap,
-            nextPath: Round.Path,
-            isTimerMode: false
+            header_icon: null,
+            footer_popover: null,
+            footer_handleSubmit: null,
+            footer_leftComponent: null,
+            footer_rightComponent: null,
         };
     }
 
-    handleScreenDidMount(headerIcon, nextPath, isTimerMode = false) {
-        this.setState({
-            headerIcon: headerIcon,
-            nextPath: nextPath,
-            isTimerMode: isTimerMode
-        });
+    handleScreenDidMount(options) {
+        this.setState(options);
     }
 
     render() {
         return (
             <Container className="App">
                 <Router>
-                    <Header icon={ this.state.headerIcon } />
+                    <Header icon={ this.state.header_icon } />
                     <Switch>
                         <Route exact path={ Game.Path }>
                             <Game onScreenDidMount={ this.handleScreenDidMount } />
@@ -51,8 +50,12 @@ class App extends React.Component {
                             <Result onScreenDidMount={ this.handleScreenDidMount } />
                         </Route>
                     </Switch>
-                    <Footer isTimerMode={ this.state.isTimerMode }
-                            nextPath={ this.state.nextPath } />
+                    <Footer
+                        popover={ this.state.footer_popover }
+                        onSubmit={ this.state.footer_handleSubmit }
+                        onScreenDidMount={ this.handleScreenDidMount }
+                        leftComponent={ this.state.footer_leftComponent }
+                        rightComponent={ this.state.footer_rightComponent } />
                 </Router>
             </Container>
 

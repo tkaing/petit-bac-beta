@@ -1,13 +1,14 @@
 import React from 'react';
 import './Game.css';
 
-import Round from "./Round";
-import Result from "./Result";
 import CategoryList from "../component/CategoryList";
 import CategoryItem from "../component/CategoryItem";
 
+import Joi from "@hapi/joi";
 import { Col, Row } from "react-bootstrap";
-import { faPencilAlt, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { withRouter } from 'react-router-dom';
+import { faGraduationCap, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import Round from "./Round";
 
 class Game extends React.Component {
 
@@ -15,12 +16,19 @@ class Game extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.setupCategories = this.setupCategories.bind(this);
+        this.deleteCategoryItemText = this.deleteCategoryItemText.bind(this);
+        this.appendCategoryItemText = this.appendCategoryItemText.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCategoryItemKeyUp = this.handleCategoryItemKeyUp.bind(this);
         this.handleCategoryItemClick = this.handleCategoryItemClick.bind(this);
         this.handleCloseCategoryItemClick = this.handleCloseCategoryItemClick.bind(this);
+
         this.state = {
             categoryItems: [],
+            categoryValues: [],
             categoryItemsSelected: [],
             categoryListTitle: CategoryList.emptyTitle
         };
@@ -28,7 +36,10 @@ class Game extends React.Component {
 
     componentDidMount() {
         CategoryList.editableIdentifier = 100;
-        this.props.onScreenDidMount(faPencilAlt, Round.Path);
+        this.props.onScreenDidMount({
+            header_icon: faGraduationCap,
+            footer_handleSubmit: this.handleSubmit
+        });
         this.setState({
             categoryItems: this.setupCategories(),
             categoryListTitle: CategoryList.emptyTitle
@@ -37,7 +48,9 @@ class Game extends React.Component {
 
     componentWillUnmount() {
         CategoryList.editableIdentifier = 100;
-        this.props.onScreenDidMount(faTrophy, Result.Path);
+        this.props.onScreenDidMount({
+            header: { icon: faTrophy }
+        });
     }
 
     setupCategories() {
@@ -50,7 +63,72 @@ class Game extends React.Component {
         return [...items, CategoryItem.createAdd(this.handleCategoryItemClick)];
     }
 
+    deleteCategoryItemText(categoryValues, id) {
+        const
+            index = categoryValues.findIndex((item) => item.id === id),
+            containsItem = index !== -1;
+        if (containsItem)
+            categoryValues.splice(index, 1);
+        return categoryValues;
+    }
+
+    appendCategoryItemText(categoryValues, id, text) {
+        const
+            item = categoryValues.find((item) => item.id === id),
+            containsItem = item !== undefined;
+        if (containsItem) {
+            item.text = text;
+            return categoryValues;
+        }
+        return [...categoryValues, { id: id, text: text }];
+    }
+
+    handleSubmit() {
+        const
+            idValidation = Joi.number(),
+            textValidation = Joi.string().required();
+        const
+            uniqueFnSchema = (a, b) => a.text.trim().toLowerCase() === b.text.trim().toLowerCase(),
+            objectSchema = { id: idValidation, text: textValidation },
+            itemsSchema = Joi.object(objectSchema),
+            mainSchema = Joi.array().min(1).max(7)
+                .unique(uniqueFnSchema).items(itemsSchema),
+            validator = mainSchema.validate(this.state.categoryValues);
+
+        if (validator.error) {
+            validator.error.details.forEach((detail) => {});
+            const
+                detail = validator.error.details[0],
+                type = detail.type;
+
+            let error;
+
+            switch (type) {
+                case "array.min":
+                    error = "1 minimum";
+                    break;
+                case "array.max":
+                    error = "7 maximum";
+                    break;
+                case "array.unique":
+                    error = "catégories identiques";
+                    break;
+                case "string.empty":
+                    error = "catégories incomplète";
+                    break;
+            }
+
+            this.props.onScreenDidMount({ footer_popover: error });
+
+        } else {
+
+            this.props.history.push(Round.Path);
+        }
+    }
+
     handleCategoryItemClick(categoryItem) {
+
+        let values = this.state.categoryValues;
 
         const
             items = this.state.categoryItems,
@@ -70,9 +148,14 @@ class Game extends React.Component {
                 this.handleCloseCategoryItemClick,
             );
 
+            values = this.appendCategoryItemText(
+                values, itemSelected.props.id, ""
+            );
+
             this.setState({
                 categoryItemsSelected: [...itemsSelected, itemSelected],
-                categoryListTitle: CategoryList.defaultTitle
+                categoryListTitle: CategoryList.defaultTitle,
+                categoryValues: values
             });
 
         } else {
@@ -94,14 +177,21 @@ class Game extends React.Component {
                     );
                     items.splice(index, 1, itemReplaced);
                 }
+
                 const itemSelected = CategoryItem.createSelected(
                     this.handleCloseCategoryItemClick,
                     categoryItem
                 );
+
+                values = this.appendCategoryItemText(
+                    values, id, title
+                );
+
                 this.setState({
                     categoryItems: items,
                     categoryItemsSelected: [...itemsSelected, itemSelected],
-                    categoryListTitle: CategoryList.defaultTitle
+                    categoryListTitle: CategoryList.defaultTitle,
+                    categoryValues: values
                 });
             }
             if (shouldDeleteItem) {
@@ -120,11 +210,14 @@ class Game extends React.Component {
                 if (containsItem)
                     itemsSelected.splice(index, 1);
 
+                values = this.deleteCategoryItemText(values, id);
+
                 this.setState({
                     categoryItems: items,
                     categoryItemsSelected: itemsSelected,
                     categoryListTitle: itemsSelected.length === 0
-                        ? CategoryList.emptyTitle : CategoryList.defaultTitle
+                        ? CategoryList.emptyTitle : CategoryList.defaultTitle,
+                    categoryValues: values
                 });
             }
         }
@@ -132,13 +225,22 @@ class Game extends React.Component {
 
     handleCategoryItemKeyUp(categoryItem, text) {
 
-        const id = categoryItem.props.id;
+        const values = this.appendCategoryItemText(
+            this.state.categoryValues,
+            categoryItem.props.id,
+            text
+        );
+
+        this.setState({
+            categoryValues: values
+        });
     }
 
     handleCloseCategoryItemClick(categoryItem) {
 
         let
             items = this.state.categoryItems,
+            values = this.state.categoryValues,
             itemsSelected = this.state.categoryItemsSelected;
 
         const id = categoryItem.props.id;
@@ -161,11 +263,14 @@ class Game extends React.Component {
         if (containsItem)
             itemsSelected.splice(index, 1);
 
+        values = this.deleteCategoryItemText(values, id);
+
         this.setState({
             categoryItems: items,
             categoryItemsSelected: itemsSelected,
             categoryListTitle: itemsSelected.length === 0
-                ? CategoryList.emptyTitle : CategoryList.defaultTitle
+                ? CategoryList.emptyTitle : CategoryList.defaultTitle,
+            categoryValues: values
         });
     }
 
@@ -207,4 +312,4 @@ class Game extends React.Component {
     }
 }
 
-export default Game;
+export default withRouter(Game);
