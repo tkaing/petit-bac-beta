@@ -23,10 +23,10 @@ class App extends React.Component {
         this.handleScreenDidMount = this.handleScreenDidMount.bind(this);
         this.state = {
             header_icon: null,
-            footer_popover: null,
             footer_handleSubmit: null,
             footer_leftComponent: null,
             footer_rightComponent: null,
+            game_handleSubmit: null,
         };
     }
 
@@ -41,7 +41,10 @@ class App extends React.Component {
                     <Header icon={ this.state.header_icon } />
                     <Switch>
                         <Route exact path={ Game.Path }>
-                            <Game onScreenDidMount={ this.handleScreenDidMount } />
+                            <Game
+                                onSubmit={ this.state.game_handleSubmit }
+                                onScreenDidMount={ this.handleScreenDidMount }
+                            />
                         </Route>
                         <Route path={ Round.Path }>
                             <Round onScreenDidMount={ this.handleScreenDidMount } />
@@ -51,7 +54,6 @@ class App extends React.Component {
                         </Route>
                     </Switch>
                     <Footer
-                        popover={ this.state.footer_popover }
                         onSubmit={ this.state.footer_handleSubmit }
                         onScreenDidMount={ this.handleScreenDidMount }
                         leftComponent={ this.state.footer_leftComponent }

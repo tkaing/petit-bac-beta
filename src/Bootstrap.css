@@ -53,7 +53,7 @@
 }
 
 .popover {
-    bottom: 8px !important;
+    bottom: 10px !important;
     border-radius: 24px !important;
     border-color: transparent !important;
 }

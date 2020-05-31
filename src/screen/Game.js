@@ -49,7 +49,7 @@ class Game extends React.Component {
     componentWillUnmount() {
         CategoryList.editableIdentifier = 100;
         this.props.onScreenDidMount({
-            header: { icon: faTrophy }
+            header_icon: faTrophy
         });
     }
 
@@ -91,38 +91,21 @@ class Game extends React.Component {
             uniqueFnSchema = (a, b) => a.text.trim().toLowerCase() === b.text.trim().toLowerCase(),
             objectSchema = { id: idValidation, text: textValidation },
             itemsSchema = Joi.object(objectSchema),
-            mainSchema = Joi.array().min(1).max(7)
-                .unique(uniqueFnSchema).items(itemsSchema),
+            mainSchema = Joi.array().min(1).max(7).items(itemsSchema).unique(uniqueFnSchema),
             validator = mainSchema.validate(this.state.categoryValues);
 
         if (validator.error) {
+
             validator.error.details.forEach((detail) => {});
-            const
-                detail = validator.error.details[0],
-                type = detail.type;
+            const detail = validator.error.details[0];
 
-            let error;
-
-            switch (type) {
-                case "array.min":
-                    error = "1 minimum";
-                    break;
-                case "array.max":
-                    error = "7 maximum";
-                    break;
-                case "array.unique":
-                    error = "catégories identiques";
-                    break;
-                case "string.empty":
-                    error = "catégories incomplète";
-                    break;
-            }
-
-            this.props.onScreenDidMount({ footer_popover: error });
+            return {
+                message: CategoryList.error_message(detail.type)
+            };
 
         } else {
 
-            this.props.history.push(Round.Path);
+            return { path: Round.Path };
         }
     }
 
@@ -142,21 +125,30 @@ class Game extends React.Component {
 
         if (add) {
 
-            const itemSelected = CategoryItem.createEditable(
-                this.handleCategoryItemClick,
-                this.handleCategoryItemKeyUp,
-                this.handleCloseCategoryItemClick,
-            );
+            if (values.length >= 7) {
 
-            values = this.appendCategoryItemText(
-                values, itemSelected.props.id, ""
-            );
+                this.props.onSubmit(CategoryList.error_message(
+                    CategoryList.error_array_max
+                ));
 
-            this.setState({
-                categoryItemsSelected: [...itemsSelected, itemSelected],
-                categoryListTitle: CategoryList.defaultTitle,
-                categoryValues: values
-            });
+            } else {
+
+                const itemSelected = CategoryItem.createEditable(
+                    this.handleCategoryItemClick,
+                    this.handleCategoryItemKeyUp,
+                    this.handleCloseCategoryItemClick,
+                );
+
+                values = this.appendCategoryItemText(
+                    values, itemSelected.props.id, ""
+                );
+
+                this.setState({
+                    categoryItemsSelected: [...itemsSelected, itemSelected],
+                    categoryListTitle: CategoryList.defaultTitle,
+                    categoryValues: values
+                });
+            }
 
         } else {
 
@@ -167,32 +159,42 @@ class Game extends React.Component {
                 shouldDeleteItem = active;
 
             if (shouldAddItem) {
-                const
-                    index = items.findIndex((item) => item.props.id === id),
-                    containsItem = index !== -1;
-                if (containsItem) {
-                    const itemReplaced = CategoryItem.create(
-                        this.handleCategoryItemClick,
-                        id, title, true
+
+                if (values.length >= 7) {
+
+                    this.props.onSubmit(CategoryList.error_message(
+                        CategoryList.error_array_max
+                    ));
+
+                } else {
+
+                    const
+                        index = items.findIndex((item) => item.props.id === id),
+                        containsItem = index !== -1;
+                    if (containsItem) {
+                        const itemReplaced = CategoryItem.create(
+                            this.handleCategoryItemClick,
+                            id, title, true
+                        );
+                        items.splice(index, 1, itemReplaced);
+                    }
+
+                    const itemSelected = CategoryItem.createSelected(
+                        this.handleCloseCategoryItemClick,
+                        categoryItem
                     );
-                    items.splice(index, 1, itemReplaced);
+
+                    values = this.appendCategoryItemText(
+                        values, id, title
+                    );
+
+                    this.setState({
+                        categoryItems: items,
+                        categoryItemsSelected: [...itemsSelected, itemSelected],
+                        categoryListTitle: CategoryList.defaultTitle,
+                        categoryValues: values
+                    });
                 }
-
-                const itemSelected = CategoryItem.createSelected(
-                    this.handleCloseCategoryItemClick,
-                    categoryItem
-                );
-
-                values = this.appendCategoryItemText(
-                    values, id, title
-                );
-
-                this.setState({
-                    categoryItems: items,
-                    categoryItemsSelected: [...itemsSelected, itemSelected],
-                    categoryListTitle: CategoryList.defaultTitle,
-                    categoryValues: values
-                });
             }
             if (shouldDeleteItem) {
                 let index;
@@ -312,4 +314,4 @@ class Game extends React.Component {
     }
 }
 
-export default withRouter(Game);
+export default Game;

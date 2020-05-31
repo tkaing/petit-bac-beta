@@ -4,31 +4,74 @@ import './Footer.css';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { Col, Row, OverlayTrigger, Popover } from "react-bootstrap";
+import {Col, Row, Overlay, Popover, OverlayTrigger} from "react-bootstrap";
 import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
 
 class Footer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handlePopoverHide = this.handlePopoverHide.bind(this);
+        this.handlePopoverBlur = this.handlePopoverBlur.bind(this);
+        this.handlePopoverExited = this.handlePopoverExited.bind(this);
         this.handleValidationClick = this.handleValidationClick.bind(this);
+        this.state = {
+            show: false,
+            target: null,
+            message: null,
+        };
     }
 
-    handlePopoverHide() {
-        if (this.props.popover)
-            this.props.onScreenDidMount({ footer_popover: null });
+    componentDidMount() {
+        this.props.onScreenDidMount({
+            game_handleSubmit: (message) => {
+                this.setState({
+                    message: message
+                }, this.handleValidationClick);
+            }
+        });
+    }
+
+    handlePopoverBlur() {
+        this.setState({
+            show: false
+        });
+    }
+
+    handlePopoverExited() {
+        this.setState({
+            message: null
+        });
     }
 
     handleValidationClick() {
-        if (this.props.onSubmit)
-            this.props.onSubmit();
+
+        let target = this.state.target;
+
+        if (this.props.onSubmit) {
+            const error = this.props.onSubmit();
+            if (error.message) {
+                const stateMessage = this.state.message;
+                const message = stateMessage ? stateMessage : error.message;
+                this.setState({
+                    message: message,
+                    target: target,
+                    show: true
+                });
+            }
+            if (error.path) {
+                this.props.history.push(error.path);
+            }
+        }
     }
 
     render() {
 
         const button = (
             <button
+                ref={ (element) => {
+                    if (this.state.target === null)
+                        this.setState({ target: element })
+                }}
                 type={"button"}
                 className={"Footer-child Footer-middle color-blue"}
                 onClick={ this.handleValidationClick }>
@@ -41,23 +84,22 @@ class Footer extends React.Component {
                 id={`popover-positioned-top`}
                 className={`background-dark`}>
                 <Popover.Content>
-                    <span className={"headline-md color-light"}>{ this.props.popover }</span>
+                    <span className={"headline-md color-light"}>{ this.state.message }</span>
                     <FontAwesomeIcon icon={ faExclamation } size={ "2x" } className={"color-yellow"} />
                 </Popover.Content>
             </Popover>
         );
 
         const overlay = (
-            <OverlayTrigger
-                trigger="focus"
-                key={ "top" }
-                onHide={ this.handlePopoverHide }
-                defaultShow={ this.props.popover !== null }
-                delay={ { show: 500, hide: 100 } }
-                overlay={ popover }
+            <Overlay
+                show={ this.state.show }
+                target={ this.state.target }
+                rootClose={ true }
+                onHide={() => this.setState({ show: false })}
+                onExited={ this.handlePopoverExited }
                 placement={ "top" }>
-                { button }
-            </OverlayTrigger>
+                { popover }
+            </Overlay>
         )
 
         return (
@@ -74,6 +116,7 @@ class Footer extends React.Component {
                             </Col>
 
                             <Col>
+                                { button }
                                 { overlay }
                             </Col>
 

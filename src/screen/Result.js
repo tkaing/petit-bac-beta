@@ -24,12 +24,12 @@ class Result extends React.Component {
 
     componentWillUnmount() {
         this.props.onScreenDidMount({
-            header: { icon: faFont },
+            header_icon: faFont,
         });
     }
 
     handleSubmit() {
-        this.props.history.push(Game.Path);
+        return { path: Game.Path };
     }
 
     render() {
@@ -39,4 +39,4 @@ class Result extends React.Component {
     }
 }
 
-export default withRouter(Result);
+export default Result;

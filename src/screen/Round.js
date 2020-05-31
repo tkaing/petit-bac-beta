@@ -34,7 +34,7 @@ class Round extends React.Component {
     }
 
     handleSubmit() {
-        this.props.history.push(Result.Path);
+        return { path: Result.Path };
     }
 
     render() {
@@ -44,4 +44,4 @@ class Round extends React.Component {
     }
 }
 
-export default withRouter(Round);
+export default Round;

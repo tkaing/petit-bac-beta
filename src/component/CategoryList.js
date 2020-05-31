@@ -6,8 +6,27 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 class CategoryList extends React.Component {
 
     static editableIdentifier = 100;
-    static defaultTitle = "Catégories de la partie";
+
     static emptyTitle = "";
+    static defaultTitle = "Catégories de la partie";
+
+    static error_array_min = "array.min";
+    static error_array_max = "array.max";
+    static error_array_unique = "array.unique";
+    static error_string_empty = "string.empty";
+
+    static error_message(type) {
+        switch (type) {
+            case "array.min":
+                return "1 minimum";
+            case "array.max":
+                return "7 maximum";
+            case "array.unique":
+                return "catégories identiques";
+            case "string.empty":
+                return "catégories incomplète";
+        }
+    }
 
     render() {
         const title = this.props.title;
