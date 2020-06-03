@@ -1,5 +1,5 @@
 //import logo from './logo.svg';
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import './Font.css';
 import './Bootstrap.css';
@@ -23,10 +23,10 @@ class App extends React.Component {
         this.handleScreenDidMount = this.handleScreenDidMount.bind(this);
         this.state = {
             header_icon: null,
+            game_handleSubmit: null,
             footer_handleSubmit: null,
             footer_leftComponent: null,
             footer_rightComponent: null,
-            game_handleSubmit: null,
         };
     }
 
