@@ -10,12 +10,6 @@ import { withRouter } from 'react-router-dom';
 import { faGraduationCap, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import Round from "./Round";
 
-/*import io from "socket.io-client";
-const socket = io("http://api.thierrykg.xyz:3001", {
-    transports: ["websocket", "polling"]
-});*/
-const socket = new WebSocket("ws://localhost:3001");
-
 class Game extends React.Component {
 
     static Path = '/';
@@ -49,20 +43,6 @@ class Game extends React.Component {
         this.setState({
             categoryItems: this.setupCategories(),
             categoryListTitle: CategoryList.emptyTitle
-        });
-        const self = this;
-        socket.addEventListener("open", function() {
-            console.log("CONNECTED");
-        });
-        socket.addEventListener("close", function() {
-            console.log("CLOSED");
-        });
-        socket.addEventListener("error", function(e) {
-            console.log(e);
-        });
-        socket.addEventListener("message", function(e) {
-            console.log(e.data);
-            console.log(self.state.categoryItems);
         });
     }
 

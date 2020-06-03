@@ -16,11 +16,14 @@ import { Container } from "react-bootstrap";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+const socket = new WebSocket("ws://localhost:3001");
+
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.handleScreenDidMount = this.handleScreenDidMount.bind(this);
+
         this.state = {
             header_icon: null,
             game_handleSubmit: null,
@@ -28,6 +31,25 @@ class App extends React.Component {
             footer_leftComponent: null,
             footer_rightComponent: null,
         };
+    }
+
+    componentDidMount() {
+
+        const self = this;
+
+        socket.addEventListener("open", function() {
+            console.log("CONNECTED");
+        });
+        socket.addEventListener("close", function() {
+            console.log("CLOSED");
+        });
+        socket.addEventListener("error", function(e) {
+            console.log(e);
+        });
+        socket.addEventListener("message", function(e) {
+            console.log(e.data);
+            console.log(self.state.header_icon);
+        });
     }
 
     handleScreenDidMount(options) {
