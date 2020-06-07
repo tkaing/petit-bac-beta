@@ -21,10 +21,10 @@ class CategoryList extends React.Component {
                 return "1 minimum";
             case "array.max":
                 return "7 maximum";
+            case "any.empty":
+                return "catégories incomplète";
             case "array.unique":
                 return "catégories identiques";
-            case "string.empty":
-                return "catégories incomplète";
         }
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
 
-import Logo from "../icon/LOGOTITRECLAIRE.svg";
+import Logo from "../icons/logo-default.svg";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col, Row, ListGroup, ListGroupItem } from "react-bootstrap";

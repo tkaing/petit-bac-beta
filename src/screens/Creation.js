@@ -1,21 +1,24 @@
-import React, {useEffect} from 'react';
-import './Game.css';
+import React from 'react';
+import './Creation.css';
 
-import CategoryList from "../component/CategoryList";
-import CategoryItem from "../component/CategoryItem";
+import Game from "./Game";
+import Header from "../layouts/Header";
+import Footer from "../layouts/Footer";
+import CategoryList from "../components/CategoryList";
+import CategoryItem from "../components/CategoryItem";
 
 import Joi from "@hapi/joi";
 import { Col, Row } from "react-bootstrap";
-import { withRouter } from 'react-router-dom';
-import { faGraduationCap, faTrophy } from "@fortawesome/free-solid-svg-icons";
-import Round from "./Round";
+import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
-class Game extends React.Component {
+class Creation extends React.Component {
 
-    static Path = '/';
+    static path = '/';
 
     constructor(props) {
         super(props);
+
+        this.toCreation = this.toCreation.bind(this);
 
         this.setupCategories = this.setupCategories.bind(this);
         this.deleteCategoryItemText = this.deleteCategoryItemText.bind(this);
@@ -27,6 +30,7 @@ class Game extends React.Component {
         this.handleCloseCategoryItemClick = this.handleCloseCategoryItemClick.bind(this);
 
         this.state = {
+            handlePopup: null,
             categoryItems: [],
             categoryValues: [],
             categoryItemsSelected: [],
@@ -36,10 +40,6 @@ class Game extends React.Component {
 
     componentDidMount() {
         CategoryList.editableIdentifier = 100;
-        this.props.onScreenDidMount({
-            header_icon: faGraduationCap,
-            footer_handleSubmit: this.handleSubmit
-        });
         this.setState({
             categoryItems: this.setupCategories(),
             categoryListTitle: CategoryList.emptyTitle
@@ -48,42 +48,14 @@ class Game extends React.Component {
 
     componentWillUnmount() {
         CategoryList.editableIdentifier = 100;
-        this.props.onScreenDidMount({
-            header_icon: faTrophy
-        });
     }
 
-    setupCategories() {
-        const items = ["Prénom", "Animal"].map((title, index) =>
-            CategoryItem.create(
-                this.handleCategoryItemClick,
-                index, title, false
-            )
-        );
-        return [...items, CategoryItem.createAdd(this.handleCategoryItemClick)];
-    }
-
-    deleteCategoryItemText(categoryValues, id) {
-        const
-            index = categoryValues.findIndex((item) => item.id === id),
-            containsItem = index !== -1;
-        if (containsItem)
-            categoryValues.splice(index, 1);
-        return categoryValues;
-    }
-
-    appendCategoryItemText(categoryValues, id, text) {
-        const
-            item = categoryValues.find((item) => item.id === id),
-            containsItem = item !== undefined;
-        if (containsItem) {
-            item.text = text;
-            return categoryValues;
-        }
-        return [...categoryValues, { id: id, text: text }];
+    toCreation(options) {
+        this.setState(options);
     }
 
     handleSubmit() {
+
         const
             idValidation = Joi.number(),
             textValidation = Joi.string().required();
@@ -96,16 +68,15 @@ class Game extends React.Component {
 
         if (validator.error) {
 
-            validator.error.details.forEach((detail) => {});
-            const detail = validator.error.details[0];
+            const
+                error = validator.error,
+                details = error.details[0];
 
-            return {
-                message: CategoryList.error_message(detail.type)
-            };
+            return { message: CategoryList.error_message(details.type) };
 
         } else {
 
-            return { path: Round.Path };
+            return { path: Game.path };
         }
     }
 
@@ -127,9 +98,8 @@ class Game extends React.Component {
 
             if (values.length >= 7) {
 
-                this.props.onSubmit(CategoryList.error_message(
-                    CategoryList.error_array_max
-                ));
+                const type = CategoryList.error_array_max;
+                 this.state.handlePopup(CategoryList.error_message(type));
 
             } else {
 
@@ -162,9 +132,8 @@ class Game extends React.Component {
 
                 if (values.length >= 7) {
 
-                    this.props.onSubmit(CategoryList.error_message(
-                        CategoryList.error_array_max
-                    ));
+                    const type = CategoryList.error_array_max;
+                    this.state.handlePopup(CategoryList.error_message(type));
 
                 } else {
 
@@ -197,6 +166,7 @@ class Game extends React.Component {
                 }
             }
             if (shouldDeleteItem) {
+
                 let index;
                 let containsItem;
 
@@ -276,6 +246,36 @@ class Game extends React.Component {
         });
     }
 
+    setupCategories() {
+        const items = ["Prénom", "Animal"].map((title, index) =>
+            CategoryItem.create(
+                this.handleCategoryItemClick,
+                index, title, false
+            )
+        );
+        return [...items, CategoryItem.createAdd(this.handleCategoryItemClick)];
+    }
+
+    deleteCategoryItemText(categoryValues, id) {
+        const
+            index = categoryValues.findIndex((item) => item.id === id),
+            containsItem = index !== -1;
+        if (containsItem)
+            categoryValues.splice(index, 1);
+        return categoryValues;
+    }
+
+    appendCategoryItemText(categoryValues, id, text) {
+        const
+            item = categoryValues.find((item) => item.id === id),
+            containsItem = item !== undefined;
+        if (containsItem) {
+            item.text = text;
+            return categoryValues;
+        }
+        return [...categoryValues, { id: id, text: text }];
+    }
+
     render() {
         const categoryList = (
             <CategoryList categoryItems={ this.state.categoryItems } />
@@ -284,10 +284,11 @@ class Game extends React.Component {
             <CategoryList categoryItems={ this.state.categoryItemsSelected } />
         );
         return (
-            <div className={"Game"}>
+            <div className={"Creation"}>
+                <Header icon={ faGraduationCap } />
                 <Row>
                     <Col xs={6} md={7}>
-                        <section className={"Game-left"}>
+                        <section className={"Creation-left"}>
                             { React.cloneElement(categoryList, {
                                 add: false,
                                 delete: false,
@@ -298,7 +299,7 @@ class Game extends React.Component {
                     </Col>
 
                     <Col>
-                        <section className={"Game-right"}>
+                        <section className={"Creation-right"}>
                             { React.cloneElement(categoryListSelected, {
                                 add: true,
                                 delete: true,
@@ -309,9 +310,14 @@ class Game extends React.Component {
                         </section>
                     </Col>
                 </Row>
+                <Footer
+                    left={ null }
+                    right={ null }
+                    toParent={ this.toCreation }
+                    onSubmit={ this.handleSubmit } />
             </div>
         );
     }
 }
 
-export default Game;
+export default Creation;

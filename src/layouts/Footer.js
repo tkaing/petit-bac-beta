@@ -4,8 +4,8 @@ import './Footer.css';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import {Col, Row, Overlay, Popover, OverlayTrigger} from "react-bootstrap";
 import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Overlay, Popover } from "react-bootstrap";
 
 class Footer extends React.Component {
 
@@ -22,8 +22,8 @@ class Footer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onScreenDidMount({
-            game_handleSubmit: (message) => {
+        this.props.toParent({
+            handlePopup: (message) => {
                 this.setState({
                     message: message
                 }, this.handleValidationClick);
@@ -48,17 +48,22 @@ class Footer extends React.Component {
         let target = this.state.target;
 
         if (this.props.onSubmit) {
+
             const error = this.props.onSubmit();
+
+            if (this.state.message)
+                error.message = this.state.message;
+
             if (error.message) {
-                const stateMessage = this.state.message;
-                const message = stateMessage ? stateMessage : error.message;
+
                 this.setState({
-                    message: message,
+                    message: error.message,
                     target: target,
                     show: true
                 });
             }
             if (error.path) {
+
                 this.props.history.push(error.path);
             }
         }
@@ -111,7 +116,7 @@ class Footer extends React.Component {
                         <Row className={"align-items-center"}>
                             <Col>
                                 <div className={"Footer-child Footer-left color-yellow"}>
-                                    { this.props.leftComponent }
+                                    { this.props.left }
                                 </div>
                             </Col>
 
@@ -122,7 +127,7 @@ class Footer extends React.Component {
 
                             <Col>
                                 <div className={"Footer-child Footer-right color-yellow"}>
-                                    { this.props.rightComponent }
+                                    { this.props.right }
                                 </div>
                             </Col>
                         </Row>
