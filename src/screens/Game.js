@@ -6,8 +6,8 @@ import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import Creation from "./Creation";
 
+import { Row } from "react-bootstrap";
 import { faFont } from "@fortawesome/free-solid-svg-icons";
-import {Row} from "react-bootstrap";
 
 class Game extends React.Component {
 

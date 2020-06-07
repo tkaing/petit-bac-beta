@@ -62,10 +62,9 @@ class Footer extends React.Component {
                     show: true
                 });
             }
-            if (error.path) {
 
+            if (error.path)
                 this.props.history.push(error.path);
-            }
         }
     }
 

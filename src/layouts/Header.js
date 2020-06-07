@@ -19,7 +19,7 @@ class Header extends React.Component {
                 <Row>
                     <Col />
 
-                    <Col md={8} lg={6}>
+                    <Col md={8} lg={7} xl={6}>
                         <Row>
                             <Col xs={4}>
                                 <button type={"button"} className={"Header-logo"}>

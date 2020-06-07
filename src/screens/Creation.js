@@ -1,9 +1,9 @@
 import React from 'react';
 import './Creation.css';
 
-import Game from "./Game";
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
+import Loading from "./Loading";
 import CategoryList from "../components/CategoryList";
 import CategoryItem from "../components/CategoryItem";
 
@@ -76,7 +76,7 @@ class Creation extends React.Component {
 
         } else {
 
-            return { path: Game.path };
+            return { path: Loading.path };
         }
     }
 

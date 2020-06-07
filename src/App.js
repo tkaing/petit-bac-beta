@@ -9,6 +9,7 @@ import Creation from "./screens/Creation";
 
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Loading from "./screens/Loading";
 
 const socket = new WebSocket("ws://api.thierrykg.xyz:3001");
 
@@ -52,6 +53,9 @@ class App extends React.Component {
                         </Route>
                         <Route path={ Game.path }>
                             <Game toParent={ this.toApp } />
+                        </Route>
+                        <Route path={ Loading.path }>
+                            <Loading />
                         </Route>
                     </Switch>
                 </Router>
